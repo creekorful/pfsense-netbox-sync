@@ -114,7 +114,7 @@ def process_new_host_overrides(host_overrides: List[dict]):
         )
 
         if r.status_code != 200:
-            print(f'Error while creating host override ({r.status_code})')
+            print(f'Error while creating host override {host_override["host"]} ({r.status_code})')
             sys.exit(1)
 
 
@@ -143,7 +143,7 @@ def process_changed_host_overrides(pf_host_overrides: dict, host_overrides: List
         )
 
         if r.status_code != 200:
-            print(f'Error while updating host override ({r.status_code})')
+            print(f'Error while updating host override {host_override["host"]} ({r.status_code})')
             sys.exit(1)
 
 
@@ -164,7 +164,7 @@ def process_deleted_host_overrides(host_overrides: List[dict]):
         )
 
         if r.status_code != 200:
-            print(f'Error while deleting host override ({r.status_code})')
+            print(f'Error while deleting host override {host_override["host"]} ({r.status_code})')
             sys.exit(1)
 
 
