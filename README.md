@@ -44,7 +44,7 @@ The following env variables will need to be set:
 You can then execute the script using the following command:
 
 ```
-PF_API_URL=xx PF_API_USER=xx PF_API_PASS=xx NB_API_URL=xx NB_API_TOKEN=xx python3 -m app
+PF_API_URL=xx PF_API_USER=xx PF_API_PASS=xx NB_API_URL=xx NB_API_TOKEN=xx python3 -m pfsense_netbox_sync
 ```
 
 The script will indicate any change made.
