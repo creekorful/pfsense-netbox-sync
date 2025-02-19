@@ -10,6 +10,7 @@ from typing import List
 import pynetbox
 import requests
 import sys
+import urllib3
 from requests.auth import HTTPBasicAuth
 
 
@@ -208,6 +209,15 @@ def main():
     # Then process the changed host overrides
     process_changed_host_overrides(pf_host_overrides, changed_host_overrides)
 
+    # Once it's done, re-fetch the actual host overrides from pfSense API (because the ID may have changed)
+    pf_host_overrides = fetch_pfsense_host_overrides()
+
+    # Re-compute the changes (only for the deleted this time)
+    (_, _, deleted_host_overrides) = compute_host_overrides_changes(
+        nb_host_overrides,
+        pf_host_overrides,
+    )
+
     # Finally process the deleted host overrides
     process_deleted_host_overrides(deleted_host_overrides)
 
@@ -225,4 +235,6 @@ def main():
 
 
 if __name__ == '__main__':
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
     main()
