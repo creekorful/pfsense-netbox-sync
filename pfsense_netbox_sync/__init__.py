@@ -14,7 +14,7 @@ import urllib3
 from requests.auth import HTTPBasicAuth
 
 
-def fetch_netbox_host_overrides(nb_api: pynetbox.api) -> dict:
+def _fetch_netbox_host_overrides(nb_api: pynetbox.api) -> dict:
     """
     Fetch and build a list of host override from a NetBox instance
     :param nb_api: the NetBox API client
@@ -42,7 +42,7 @@ def fetch_netbox_host_overrides(nb_api: pynetbox.api) -> dict:
     return nb_host_overrides
 
 
-def fetch_pfsense_host_overrides() -> dict:
+def _fetch_pfsense_host_overrides() -> dict:
     """
     Fetch and build a list of host override from a pfSense instance
     :return: the list of host overrides mapped by their hostname
@@ -70,7 +70,7 @@ def fetch_pfsense_host_overrides() -> dict:
     return pf_host_overrides
 
 
-def compute_host_overrides_changes(
+def _compute_host_overrides_changes(
         netbox_host_overrides: dict,
         pfsense_host_overrides: dict,
 ) -> (List[dict], List[dict], List[dict]):
@@ -120,7 +120,7 @@ def process_new_host_overrides(host_overrides: List[dict]):
             sys.exit(1)
 
 
-def process_changed_host_overrides(pf_host_overrides: dict, host_overrides: List[dict]):
+def _process_changed_host_overrides(pf_host_overrides: dict, host_overrides: List[dict]):
     """
     Process the changed host overrides. This will update them into the pfSense instance
     :param pf_host_overrides: the actual host overrides coming from the pfSense instance
@@ -149,7 +149,7 @@ def process_changed_host_overrides(pf_host_overrides: dict, host_overrides: List
             sys.exit(1)
 
 
-def process_deleted_host_overrides(host_overrides: List[dict]):
+def _process_deleted_host_overrides(host_overrides: List[dict]):
     """
     Process the deleted host overrides. This will delete them from the pfSense instance
     :param host_overrides: the deleted host overrides
@@ -182,13 +182,13 @@ def main():
     )
 
     # First, built the host overrides using Netbox as source
-    nb_host_overrides = fetch_netbox_host_overrides(nb_api)
+    nb_host_overrides = _fetch_netbox_host_overrides(nb_api)
 
     # Then fetch the actual host overrides from pfSense API
-    pf_host_overrides = fetch_pfsense_host_overrides()
+    pf_host_overrides = _fetch_pfsense_host_overrides()
 
     # Compute the changes
-    (new_host_overrides, changed_host_overrides, deleted_host_overrides) = compute_host_overrides_changes(
+    (new_host_overrides, changed_host_overrides, deleted_host_overrides) = _compute_host_overrides_changes(
         nb_host_overrides,
         pf_host_overrides,
     )
@@ -207,19 +207,19 @@ def main():
     process_new_host_overrides(new_host_overrides)
 
     # Then process the changed host overrides
-    process_changed_host_overrides(pf_host_overrides, changed_host_overrides)
+    _process_changed_host_overrides(pf_host_overrides, changed_host_overrides)
 
     # Once it's done, re-fetch the actual host overrides from pfSense API (because the ID may have changed)
-    pf_host_overrides = fetch_pfsense_host_overrides()
+    pf_host_overrides = _fetch_pfsense_host_overrides()
 
     # Re-compute the changes (only for the deleted this time)
-    (_, _, deleted_host_overrides) = compute_host_overrides_changes(
+    (_, _, deleted_host_overrides) = _compute_host_overrides_changes(
         nb_host_overrides,
         pf_host_overrides,
     )
 
     # Finally process the deleted host overrides
-    process_deleted_host_overrides(deleted_host_overrides)
+    _process_deleted_host_overrides(deleted_host_overrides)
 
     # Finally restart the DNS resolver
     r = requests.post(
