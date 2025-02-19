@@ -25,6 +25,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://git.creekorful.cloud/creekorful/pfsense-netbox-sync"
 Issues = "https://git.creekorful.cloud/creekorful/pfsense-netbox-sync/issues"
+Changelog = "https://git.creekorful.cloud/creekorful/pfsense-netbox-sync/src/branch/main/Changelog.md"
 
 [project.scripts]
 pfnbsync = "pfsense_netbox_sync:main"
