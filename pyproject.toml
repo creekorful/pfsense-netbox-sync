@@ -20,12 +20,12 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-[license]
-file = 'LICENSE.txt'
-
 [project.urls]
 Homepage = "https://git.creekorful.cloud/creekorful/pfsense-netbox-sync"
 Issues = "https://git.creekorful.cloud/creekorful/pfsense-netbox-sync/issues"
 
 [project.scripts]
 pfnbsync = "pfsense_netbox_sync:main"
+
+[license]
+file = 'LICENSE.txt'
