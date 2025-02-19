@@ -21,7 +21,7 @@ def fetch_netbox_host_overrides(nb_api: pynetbox.api) -> dict:
     """
 
     nb_host_overrides = {}
-    for nb_ip_address in nb_api.ipam.ip_addresses.all():
+    for nb_ip_address in nb_api.ipam.ip_addresses.filter(status='active'):
         if nb_ip_address.dns_name is None or nb_ip_address.dns_name == '':
             continue
 
