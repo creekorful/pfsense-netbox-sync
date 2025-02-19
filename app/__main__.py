@@ -26,10 +26,11 @@ def fetch_netbox_host_overrides(nb_api: pynetbox.api) -> dict:
             continue
 
         host = nb_ip_address.dns_name.split('.')[0]
+        domain = '.'.join(nb_ip_address.dns_name.split('.')[1:])
 
         nb_host_overrides[nb_ip_address.dns_name] = {
             'host': host,
-            'domain': nb_ip_address.dns_name.replace(f'{host}.', ''),
+            'domain': domain,
             'ip': [
                 nb_ip_address.address.split('/')[0],
             ],
