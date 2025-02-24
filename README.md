@@ -10,6 +10,12 @@ corresponding DNS entries on pfSense DNS resolver.
 
 ## Installation
 
+This package is available on PyPi. You can install it using pip.
+
+```
+$ pip install pfsense-netbox-sync
+```
+
 ## Configuration
 
 ### On NetBox
